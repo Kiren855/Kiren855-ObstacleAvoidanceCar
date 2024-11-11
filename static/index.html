@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robot Controller</title>
+    <style>
+        button {
+            padding: 15px;
+            font-size: 16px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Robot Controller</h1>
+    
+    <button onclick="sendCommand('forward', 2)">Forward</button><br>
+    <button onclick="sendCommand('left', 1)">Left</button>
+    <button onclick="sendStop()">Stop</button>
+    <button onclick="sendCommand('right', 1)">Right</button><br>
+    <button onclick="sendCommand('backward', 2)">Backward</button>
+    
+    <script>
+        function sendCommand(direction, duration) {
+            fetch('/move', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ direction: direction, duration: duration })
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                console.log(data);
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function sendStop() {
+            fetch('/stop', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                console.log(data);
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
